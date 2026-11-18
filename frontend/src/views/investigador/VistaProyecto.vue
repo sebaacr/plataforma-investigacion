@@ -103,8 +103,8 @@ async function devolver(tarea) {
     </div>
     <form v-if="verEtapa" @submit.prevent="agregarEtapa">
       <label>Nombre de la etapa <input v-model="formEtapa.nombre" /></label>
-      <label>Inicio <input v-model="formEtapa.fechaInicio" type="date" /></label>
-      <label>Término <input v-model="formEtapa.fechaFin" type="date" /></label>
+      <label>Fecha de inicio <input v-model="formEtapa.fechaInicio" type="date" /></label>
+      <label>Fecha de término <input v-model="formEtapa.fechaFin" type="date" /></label>
       <button class="boton" type="submit">Agregar etapa</button>
     </form>
     <CartaGantt :etapas="etapas" />
