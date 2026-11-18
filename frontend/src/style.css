@@ -55,6 +55,11 @@ td button, td a { margin-right: 5px; }
 .estado.cumplida { background: var(--verde); }
 .estado.atrasada { background: var(--rojo); }
 
+.prioridad { padding: 3px 8px; font-size: 12px; font-weight: bold; white-space: nowrap; border: 1px solid; }
+.prioridad.alta { color: var(--rojo); border-color: var(--rojo); background: #fdecea; }
+.prioridad.media { color: var(--amarillo); border-color: var(--amarillo); background: #fff3cd; }
+.prioridad.baja { color: var(--verde); border-color: var(--verde); background: #e6f4ea; }
+
 .titulo-fila { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
 .filtros { display: flex; gap: 10px; }
 .error { color: var(--rojo); background: #fdecea; padding: 10px; }

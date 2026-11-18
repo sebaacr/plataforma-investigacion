@@ -18,3 +18,10 @@ export function estaAtrasada(tarea) {
   const hoy = new Date().toISOString().slice(0, 10)
   return tarea.estado !== 'cumplida' && tarea.fechaLimite < hoy
 }
+
+// Prioridad: texto para mostrar y peso para ordenar (alta primero)
+export const textoPrioridad = { alta: 'Alta', media: 'Media', baja: 'Baja' }
+export const pesoPrioridad = { alta: 1, media: 2, baja: 3 }
+
+// Estado que se ve en pantalla: "atrasada" se calcula (RN-09), no se guarda
+export const estadoVisible = (tarea) => estaAtrasada(tarea) ? 'atrasada' : tarea.estado

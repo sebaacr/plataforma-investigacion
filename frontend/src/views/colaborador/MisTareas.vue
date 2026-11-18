@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { obtenerTareasResponsable, cambiarEstado, obtenerArchivos, subirArchivo, estaAtrasada } from '../../services/tareasApi'
+import { ref, computed, onMounted } from 'vue'
+import { obtenerTareasResponsable, cambiarEstado, obtenerArchivos, subirArchivo, estadoVisible, textoPrioridad, pesoPrioridad } from '../../services/tareasApi'
 import { obtenerProyectos } from '../../services/proyectosApi'
 import { registrarHistorial } from '../../services/api'
 import { usuario } from '../../sesion'
@@ -25,7 +25,19 @@ onMounted(cargar)
 const tituloDe = (id) => proyectos.value.find(p => p.id === id)?.titulo || ''
 const archivoDe = (tareaId) => archivos.value.filter(a => a.tareaId === tareaId).at(-1)
 const formato = (f) => f.split('-').reverse().join('/')
-const textoEstado = { pendiente: 'Pendiente', por_revisar: 'Por revisar', cumplida: 'Cumplida' }
+const textoEstado = { pendiente: 'Pendiente', por_revisar: 'Por revisar', cumplida: 'Cumplida', atrasada: 'Atrasada' }
+
+// Filtro por estado (incluye "atrasada", que se calcula)
+const filtroEstado = ref('todos')
+
+// Tareas filtradas y ordenadas: primero por prioridad (alta > media > baja), luego por fecha límite
+const tareasVisibles = computed(() =>
+  tareas.value
+    .filter(t => filtroEstado.value === 'todos' || estadoVisible(t) === filtroEstado.value)
+    .sort((a, b) =>
+      (pesoPrioridad[a.prioridad] || 9) - (pesoPrioridad[b.prioridad] || 9) ||
+      a.fechaLimite.localeCompare(b.fechaLimite))
+)
 
 function elegir(evento) {
   archivoElegido.value = evento.target.files[0] || null
@@ -60,17 +72,30 @@ async function enviarArchivo(tarea) {
   <p v-if="mensaje" class="exito">{{ mensaje }}</p>
   <p v-if="!error && tareas.length === 0">No tienes tareas asignadas.</p>
 
-  <table v-if="tareas.length">
-    <thead><tr><th>Tarea</th><th>Proyecto</th><th>Vence</th><th>Estado</th><th>Archivo</th><th>Acción</th></tr></thead>
+  <div v-if="tareas.length" class="filtros">
+    <select v-model="filtroEstado" style="max-width:200px">
+      <option value="todos">Todos los estados</option>
+      <option value="pendiente">Pendiente</option>
+      <option value="por_revisar">Por revisar</option>
+      <option value="cumplida">Cumplida</option>
+      <option value="atrasada">Atrasada</option>
+    </select>
+  </div>
+
+  <p v-if="tareas.length && tareasVisibles.length === 0">No hay tareas con ese estado.</p>
+
+  <table v-if="tareasVisibles.length">
+    <thead><tr><th>Tarea</th><th>Proyecto</th><th>Prioridad</th><th>Vence</th><th>Estado</th><th>Archivo</th><th>Acción</th></tr></thead>
     <tbody>
-      <tr v-for="t in tareas" :key="t.id">
+      <tr v-for="t in tareasVisibles" :key="t.id">
         <td><b>{{ t.nombre }}</b><br><small>{{ t.descripcion }}</small></td>
         <td>{{ tituloDe(t.proyectoId) }}</td>
+        <td>
+          <span class="prioridad" :class="t.prioridad">{{ textoPrioridad[t.prioridad] || '—' }}</span>
+        </td>
         <td>{{ formato(t.fechaLimite) }}</td>
         <td>
-          <span class="estado" :class="estaAtrasada(t) ? 'atrasada' : t.estado">
-            {{ estaAtrasada(t) ? 'Atrasada' : textoEstado[t.estado] }}
-          </span>
+          <span class="estado" :class="estadoVisible(t)">{{ textoEstado[estadoVisible(t)] }}</span>
         </td>
         <td>
           <a v-if="archivoDe(t.id)" :href="archivoDe(t.id).driveUrl" target="_blank">
