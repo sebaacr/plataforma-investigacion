@@ -30,6 +30,25 @@ const misTareas = computed(() => {
   return tareas.value.filter(t => ids.includes(t.proyectoId))
 })
 
+const estadosProyecto = [
+  { valor: 'activo', texto: 'Activos' },
+  { valor: 'pendiente', texto: 'Pendientes' },
+  { valor: 'finalizado', texto: 'Finalizados' }
+]
+const filtroEstado = ref('todos')
+
+const contarProyectos = (estado) => misProyectos.value.filter(p => p.estado === estado).length
+
+const proyectosFiltrados = computed(() =>
+  filtroEstado.value === 'todos'
+    ? misProyectos.value
+    : misProyectos.value.filter(p => p.estado === filtroEstado.value)
+)
+
+function elegirEstado(estado) {
+  filtroEstado.value = filtroEstado.value === estado ? 'todos' : estado
+}
+
 const contar = (estado) => misTareas.value.filter(t => t.estado === estado).length
 const atrasadas = computed(() => misTareas.value.filter(estaAtrasada).length)
 
@@ -49,17 +68,29 @@ const archivoDe = (tareaId) => archivos.value.filter(a => a.tareaId === tareaId)
   <h2>Dashboard</h2>
   <p v-if="error" class="error">{{ error }}</p>
 
+  <h3>Proyectos por estado</h3>
   <div class="tarjetas">
-    <div class="tarjeta"><div class="numero">{{ misProyectos.filter(p => p.estado === 'activo').length }}</div>Proyectos activos</div>
-    <div class="tarjeta"><div class="numero">{{ contar('cumplida') }}</div>Tareas cumplidas</div>
+    <div v-for="e in estadosProyecto" :key="e.valor" class="tarjeta seleccionable"
+         :class="{ elegida: filtroEstado === e.valor }" @click="elegirEstado(e.valor)">
+      <div class="numero">{{ contarProyectos(e.valor) }}</div>Proyectos {{ e.texto.toLowerCase() }}
+    </div>
+  </div>
+
+  <h3>Tareas</h3>
+  <div class="tarjetas">
+    <div class="tarjeta"><div class="numero">{{ contar('cumplida') }}</div>Cumplidas</div>
     <div class="tarjeta"><div class="numero">{{ contar('por_revisar') }}</div>Por revisar</div>
     <div class="tarjeta"><div class="numero">{{ contar('pendiente') }}</div>Pendientes</div>
     <div class="tarjeta"><div class="numero texto-rojo">{{ atrasadas }}</div>Atrasadas</div>
   </div>
 
-  <h3>Avance por proyecto</h3>
-  <div v-for="p in misProyectos" :key="p.id">
-    <p>{{ p.titulo }}</p>
+  <div class="titulo-fila">
+    <h3>Avance por proyecto</h3>
+    <a v-if="filtroEstado !== 'todos'" href="#" @click.prevent="filtroEstado = 'todos'">Ver todos</a>
+  </div>
+  <p v-if="proyectosFiltrados.length === 0">No hay proyectos en este estado.</p>
+  <div v-for="p in proyectosFiltrados" :key="p.id">
+    <p>{{ p.titulo }} <span class="estado-proyecto" :class="p.estado">{{ p.estado }}</span></p>
     <div class="barra-avance"><div :style="{ width: avance(p.id) + '%' }">{{ avance(p.id) }}%</div></div>
   </div>
 
