@@ -95,6 +95,14 @@ td button, td a { margin-right: 5px; }
 .tarea small { color: #777; }
 .tarea .archivo, .tarea .acciones { margin-top: 6px; }
 
+.tarjeta.seleccionable { cursor: pointer; }
+.tarjeta.seleccionable:hover { background: #eef5fc; }
+.tarjeta.elegida { border: 2px solid var(--azul-claro); background: #eef5fc; }
+.estado-proyecto { padding: 2px 8px; font-size: 11px; color: white; margin-left: 6px; }
+.estado-proyecto.activo { background: var(--azul-claro); }
+.estado-proyecto.pendiente { background: var(--amarillo); }
+.estado-proyecto.finalizado { background: var(--verde); }
+
 .barra-avance { background: #ddd; height: 18px; margin-bottom: 15px; }
 .barra-avance div { background: var(--verde); height: 100%; color: white; font-size: 11px; padding-left: 5px; line-height: 18px; }
 
