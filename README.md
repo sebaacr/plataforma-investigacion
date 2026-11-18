@@ -15,7 +15,9 @@ Aplicación web para centralizar la gestión de proyectos de investigación: por
 - Vue Router 4 (rutas protegidas por rol)
 - Fetch API, centralizado en `src/services/`
 - JSON Server (API REST simulada con `db.json`)
-- **Siguiente etapa:** backend Express + MySQL (sesiones, bcrypt, roles) e integración con Google Drive y login Google.
+- Express + `google-auth-library` para validar los ID tokens de Google
+- Inicio exclusivo con Google; la aplicación no almacena contraseñas ni tokens de Google
+- **Pendiente:** reemplazar JSON Server por persistencia institucional y proteger todas las operaciones del servidor por rol.
 
 ## 3. Instalación y ejecución
 ```bash
@@ -23,22 +25,35 @@ cd frontend
 npm install
 ```
 
-Se necesitan **dos terminales** dentro de `frontend`:
+1. Copia `frontend/.env.example` a `frontend/.env` y configura `GOOGLE_CLIENT_ID` con un cliente OAuth de tipo aplicación web creado en Google Cloud. Autoriza `http://localhost:5173` como origen JavaScript. El mismo ID se usa en el navegador y en el servidor; no agregues secretos OAuth al frontend.
 
-**Terminal 1 – API (JSON Server):**
+Se necesitan **tres terminales** dentro de `frontend`:
+
+**Terminal 1 – API de datos (JSON Server):**
 ```bash
 npm run api
 ```
 Disponible en http://localhost:3000
 
-**Terminal 2 – Frontend (Vite):**
+**Terminal 2 – Validación de identidad (Express):**
+```bash
+npm run auth
+```
+Disponible en http://localhost:3001. Verifica la firma, audiencia, correo confirmado y nonce del ID token de Google, y permite entrar solo a cuentas activas ya registradas.
+
+**Terminal 3 – Frontend (Vite):**
 ```bash
 npm run dev
 ```
 Disponible en http://localhost:5173
 
-## 4. Usuarios de prueba
-Contraseña de todos: `1234` (solo prototipo; en el backend real se usará hash bcrypt).
+**Pruebas automatizadas:**
+```bash
+npm test
+```
+
+## 4. Usuarios habilitados de prueba
+Para iniciar sesión, usa Google con la misma dirección de correo registrada. No existen contraseñas locales; `db.json` solo contiene perfiles, roles y estado de las cuentas.
 
 | Rol | Correo |
 |---|---|
@@ -81,7 +96,7 @@ frontend/
 - RN-16: las cuentas se desactivan, no se eliminan.
 
 ## 8. Limitaciones (pendiente para siguientes avances)
-- Login simulado contra `db.json` (falta backend con bcrypt y sesiones).
+- Las rutas y los datos del sistema siguen siendo un prototipo local con JSON Server. Aunque el servidor de autenticación valida Google, el perfil de sesión y las rutas protegidas del cliente no sustituyen autorización de servidor. No publicar este prototipo como sistema de producción hasta proteger las operaciones de datos y desplegar el backend bajo HTTPS.
 - La subida de archivos solo guarda el nombre; falta integrar la API de Google Drive.
 - Envío de correo al asignar tareas: versión futura.
 - Por confirmar con la contraparte: si el líder puede crear colaboradores, criterio de % de avance, módulo de estudios y pruebas (RF-16).
