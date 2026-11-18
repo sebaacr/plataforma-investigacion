@@ -5,11 +5,11 @@
     { "id": "3", "nombre": "colaborador" }
   ],
   "usuarios": [
-    { "id": "1", "nombre": "Administrador", "correo": "admin@unach.cl", "password": "1234", "rol": "admin", "especialidad": "", "institucion": "UNACH", "activo": true },
-    { "id": "2", "nombre": "Dra. Ana Pérez", "correo": "aperez@unach.cl", "password": "1234", "rol": "investigador", "especialidad": "Educación", "institucion": "UNACH", "activo": true },
-    { "id": "3", "nombre": "Dr. Luis Muñoz", "correo": "lmunoz@unach.cl", "password": "1234", "rol": "investigador", "especialidad": "Informática", "institucion": "UNACH", "activo": true },
-    { "id": "4", "nombre": "Juan Soto", "correo": "jsoto@unach.cl", "password": "1234", "rol": "colaborador", "especialidad": "Psicología", "institucion": "UNACH", "activo": true },
-    { "id": "5", "nombre": "María López", "correo": "mlopez@unach.cl", "password": "1234", "rol": "colaborador", "especialidad": "Estadística", "institucion": "UNACH", "activo": true }
+    { "id": "1", "nombre": "Administrador", "correo": "admin@unach.cl", "rol": "admin", "especialidad": "", "institucion": "UNACH", "activo": true },
+    { "id": "2", "nombre": "Dra. Ana Pérez", "correo": "aperez@unach.cl", "rol": "investigador", "especialidad": "Educación", "institucion": "UNACH", "activo": true },
+    { "id": "3", "nombre": "Dr. Luis Muñoz", "correo": "lmunoz@unach.cl", "rol": "investigador", "especialidad": "Informática", "institucion": "UNACH", "activo": true },
+    { "id": "4", "nombre": "Juan Soto", "correo": "jsoto@unach.cl", "rol": "colaborador", "especialidad": "Psicología", "institucion": "UNACH", "activo": true },
+    { "id": "5", "nombre": "María López", "correo": "mlopez@unach.cl", "rol": "colaborador", "especialidad": "Estadística", "institucion": "UNACH", "activo": true }
   ],
   "proyectos": [
     { "id": "1", "titulo": "Hábitos de estudio en estudiantes de primer año", "objetivo": "Analizar los hábitos de estudio de los estudiantes de primer año y su relación con el rendimiento académico.", "faseActual": "Comité de ética", "estado": "activo", "esPublico": true, "liderId": "2", "fechaInicio": "2026-09-01", "fechaFin": "2027-02-28" },

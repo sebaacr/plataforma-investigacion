@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { obtenerProyectosPublicos } from '../../services/proyectosApi'
+import { filtrarProyectosPublicos } from '../../services/portalPublico'
 import { obtenerUsuarios } from '../../services/usuariosApi'
 
 const proyectos = ref([])
@@ -25,10 +26,7 @@ onMounted(async () => {
 const nombreDe = (id) => usuarios.value.find(u => u.id === id)?.nombre || ''
 
 const filtrados = computed(() => {
-  const texto = buscando.value.trim().toLowerCase()
-  return proyectos.value.filter(p =>
-    `${p.titulo} ${nombreDe(p.liderId)}`.toLowerCase().includes(texto)
-  )
+  return filtrarProyectosPublicos(proyectos.value, buscando.value, nombreDe)
 })
 </script>
 

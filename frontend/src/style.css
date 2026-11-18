@@ -74,7 +74,7 @@ td button, td a { margin-right: 5px; }
 .fase.hecha { background: var(--azul-claro); color: white; }
 
 .caja-login { width: 360px; max-width: 95%; margin: 60px auto; border-top: 5px solid var(--azul); }
-.caja-login .boton { width: 100%; margin-bottom: 8px; }
+.boton-google { display: flex; justify-content: center; min-height: 40px; }
 
 .gantt { background: white; padding: 15px; margin-bottom: 20px; }
 .gantt-fila { display: flex; align-items: center; margin: 6px 0; }

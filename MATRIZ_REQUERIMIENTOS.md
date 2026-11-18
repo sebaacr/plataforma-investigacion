@@ -13,13 +13,13 @@ Línea base: requerimientos funcionales del documento "Plataforma Integral de Ge
 
 | ID | Requerimiento | Responsable | Estado | Criterio de aceptación | Evidencia |
 |---|---|---|---|---|---|
-| RF-01 | Iniciar y cerrar sesión | Pablo | Terminado (login simulado) | Con correo y clave válidos entra a su inicio según rol; con datos erróneos muestra error; "Salir" cierra la sesión | `Login.vue`, `sesion.js` |
+| RF-01 | Iniciar y cerrar sesión | Pablo | Implementado (Google OIDC) | Solo admite cuentas Google verificadas, activas y registradas; dirige al inicio según rol; "Salir" cierra la sesión; no almacena contraseñas ni tokens de Google | `Login.vue`, `authApp.js`, `sesion.js` |
 | RF-02 | Crear, consultar, editar y desactivar cuentas | Sebastián | Terminado | Solo el admin crea cuentas @unach.cl, sin correos repetidos; cambia rol; desactiva sin borrar | `admin/Usuarios.vue` |
 | RF-03 | Perfiles con especialidad, institución y proyectos | Sebastián | Parcial | Datos guardados; falta pantalla de perfil | `db.json` (usuarios) |
 | RF-04 | Asignar roles y actualizar perfil propio | Sebastián | Parcial | Roles: sí. Edición del perfil propio: pendiente | `admin/Usuarios.vue` |
 | RF-05 | Registrar, editar y consultar proyectos | Sebastián | Terminado | Valida título, objetivo, líder obligatorio y fechas coherentes | `admin/FormularioProyecto.vue` |
-| RF-06 | Búsqueda, filtros y fichas | Pablo | Terminado | Buscador en portal, filtros por estado y rol, ficha con detalle | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue` |
-| RF-07 | Publicar solo contenido autorizado | Pablo | Terminado | Un proyecto sin "Publicar" no aparece en el portal ni se abre su ficha | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue` |
+| RF-06 | Búsqueda, filtros y fichas | Pablo | Terminado | Buscador en portal, filtros por estado y rol, ficha con detalle | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue`, `test/portal.test.js` |
+| RF-07 | Publicar solo contenido autorizado | Pablo | Terminado | Un proyecto sin "Publicar" no aparece en el portal ni se abre su ficha | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue`, `test/portal.test.js` |
 | RF-08 | Enviar invitaciones | — | Pendiente | Reemplazado por creación de cuentas por el admin; por confirmar con la contraparte | — |
 | RF-09 | Aceptar o rechazar invitaciones | — | Pendiente | Depende de RF-08 | — |
 | RF-10 | Asignar funciones y consultar integrantes | Benjamín | Parcial | Integrantes visibles en ficha y al asignar; falta pantalla para agregarlos | `db.json` (participaciones) |
