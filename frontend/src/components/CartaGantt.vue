@@ -1,7 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 
-const props = defineProps({ etapas: Array })
+const props = defineProps({ etapas: Array, hitos: { type: Array, default: () => [] }, editable: Boolean })
+const emit = defineEmits(['editar'])
 
 const DIA = 24 * 60 * 60 * 1000
 
@@ -28,13 +29,23 @@ function estado(etapa) {
 }
 
 const formato = (f) => f.split('-').reverse().join('/')
+
+// Hitos (RF-11): solo se dibujan los que caen dentro del rango de las etapas
+const hitosVisibles = computed(() => props.hitos.filter(h => {
+  const fecha = new Date(h.fecha)
+  return props.etapas.length && fecha >= inicio.value && fecha <= fin.value
+}))
+const posicionHito = (hito) => ({ left: ((new Date(hito.fecha) - inicio.value) / DIA / totalDias.value * 100) + '%' })
 </script>
 
 <template>
   <div class="gantt">
     <p v-if="etapas.length === 0">Este proyecto aún no tiene etapas.</p>
     <div v-for="e in ordenadas" :key="e.id" class="gantt-fila">
-      <div class="gantt-nombre">{{ e.orden }}. {{ e.nombre }}</div>
+      <div class="gantt-nombre">
+        {{ e.orden }}. {{ e.nombre }}
+        <button v-if="editable" class="editar-etapa" title="Editar etapa" @click="emit('editar', e)">✎</button>
+      </div>
       <div class="gantt-pista">
         <div class="gantt-barra" :class="estado(e)" :style="estilo(e)"
              :title="`${formato(e.fechaInicio)} - ${formato(e.fechaFin)}`">
@@ -42,5 +53,18 @@ const formato = (f) => f.split('-').reverse().join('/')
         </div>
       </div>
     </div>
+    <div v-if="hitosVisibles.length" class="gantt-fila">
+      <div class="gantt-nombre"><b>Hitos</b></div>
+      <div class="gantt-pista">
+        <span v-for="h in hitosVisibles" :key="h.id" class="hito" :class="{ cumplido: h.cumplido }"
+              :style="posicionHito(h)" :title="`${h.nombre} · ${formato(h.fecha)}`"></span>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.editar-etapa { background: none; border: none; color: var(--azul-claro); cursor: pointer; font-size: 13px; padding: 0 4px; }
+.hito { position: absolute; top: 4px; width: 14px; height: 14px; margin-left: -7px; background: var(--amarillo); transform: rotate(45deg); }
+.hito.cumplido { background: var(--verde); }
+</style>
