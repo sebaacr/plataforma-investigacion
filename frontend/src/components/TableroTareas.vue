@@ -1,5 +1,5 @@
 <script setup>
-import { estaAtrasada } from '../services/tareasApi'
+import { estaAtrasada, textoPrioridad, pesoPrioridad } from '../services/tareasApi'
 
 const props = defineProps({
   tareas: Array,
@@ -14,7 +14,11 @@ const columnas = [
   { estado: 'cumplida', titulo: 'Cumplida' }
 ]
 
-const tareasDe = (estado) => props.tareas.filter(t => t.estado === estado)
+const tareasDe = (estado) => props.tareas
+  .filter(t => t.estado === estado)
+  .sort((a, b) =>
+    (pesoPrioridad[a.prioridad] ?? 9) - (pesoPrioridad[b.prioridad] ?? 9) ||
+    a.fechaLimite.localeCompare(b.fechaLimite))
 const nombreDe = (id) => props.usuarios.find(u => u.id === id)?.nombre || '—'
 const ultimoArchivo = (tareaId) => props.archivos.filter(a => a.tareaId === tareaId).at(-1)
 const formato = (f) => f.split('-').reverse().join('/')
@@ -27,6 +31,7 @@ const formato = (f) => f.split('-').reverse().join('/')
 
       <div v-for="t in tareasDe(c.estado)" :key="t.id" class="tarea"
            :class="[t.estado, { atrasada: estaAtrasada(t) }]">
+        <span v-if="t.prioridad" class="prioridad" :class="t.prioridad">{{ textoPrioridad[t.prioridad] }}</span>
         <b>{{ t.nombre }}</b><br>
         <small>{{ nombreDe(t.responsableId) }} · vence {{ formato(t.fechaLimite) }}</small>
         <small v-if="estaAtrasada(t)" class="texto-rojo"> · atrasada</small>
@@ -43,3 +48,7 @@ const formato = (f) => f.split('-').reverse().join('/')
     </div>
   </div>
 </template>
+
+<style scoped>
+.tarea .prioridad { float: right; margin-left: 6px; font-size: 10px; padding: 1px 6px; }
+</style>
