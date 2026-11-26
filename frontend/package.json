@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite",
     "api": "json-server db.json --port 3000",
+    "auth": "node server.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "google-auth-library": "^11.3.4",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
