@@ -30,7 +30,6 @@ function estado(etapa) {
 
 const formato = (f) => f.split('-').reverse().join('/')
 
-// Hitos (RF-11): solo se dibujan los que caen dentro del rango de las etapas
 const hitosVisibles = computed(() => props.hitos.filter(h => {
   const fecha = new Date(h.fecha)
   return props.etapas.length && fecha >= inicio.value && fecha <= fin.value

@@ -20,5 +20,6 @@ import { usuario } from '../sesion'
     <template v-if="usuario.rol === 'colaborador'">
       <RouterLink to="/mis-tareas">Mis tareas</RouterLink>
     </template>
+    <RouterLink v-if="usuario.rol !== 'admin'" to="/mi-perfil">Mi perfil</RouterLink>
   </aside>
 </template>

@@ -56,7 +56,6 @@ const integrantes = computed(() => {
   return usuarios.value.filter(u => ids.includes(u.id) && u.activo)
 })
 
-// RF-10: equipo del proyecto con su función
 const equipo = computed(() => participaciones.value.filter(p => p.proyectoId === id))
 const disponibles = computed(() => {
   const yaEstan = equipo.value.map(p => p.usuarioId)
@@ -97,7 +96,6 @@ async function quitarIntegrante(participacion) {
   } catch { error.value = 'No fue posible quitar al integrante.' }
 }
 
-// RF-13: la misma forma sirve para crear o editar una etapa
 function editarEtapa(etapa) {
   etapaEditando.value = etapa
   Object.assign(formEtapa, { nombre: etapa.nombre, fechaInicio: etapa.fechaInicio, fechaFin: etapa.fechaFin })
@@ -134,7 +132,6 @@ async function guardarEtapa() {
   } catch { error.value = 'No fue posible guardar la etapa.' }
 }
 
-// RF-11: hitos del proyecto
 async function agregarHito() {
   error.value = ''; mensaje.value = ''
   if (formHito.nombre.trim().length < 3) { error.value = 'El nombre del hito es muy corto.'; return }

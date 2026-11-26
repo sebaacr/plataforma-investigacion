@@ -12,6 +12,8 @@ import Dashboard from '../views/Dashboard.vue'
 import MisProyectos from '../views/investigador/MisProyectos.vue'
 import VistaProyecto from '../views/investigador/VistaProyecto.vue'
 import MisTareas from '../views/colaborador/MisTareas.vue'
+import MiPerfil from '../views/MiPerfil.vue'
+
 
 const rutas = [
   { path: '/', component: InicioPublico },
@@ -27,6 +29,7 @@ const rutas = [
   { path: '/dashboard', component: Dashboard, meta: { roles: ['admin', 'investigador'] } },
 
   { path: '/mis-proyectos', component: MisProyectos, meta: { roles: ['investigador'] } },
+  { path: '/mi-perfil', component: MiPerfil, meta: { roles: ['investigador', 'colaborador'] } },
   { path: '/gestion/:id', component: VistaProyecto, meta: { roles: ['investigador', 'admin'] } },
 
   { path: '/mis-tareas', component: MisTareas, meta: { roles: ['colaborador'] } }
