@@ -62,6 +62,32 @@ const cumplidas = computed(() => misTareas.value.filter(t => t.estado === 'cumpl
 const tituloDe = (id) => proyectos.value.find(p => p.id === id)?.titulo || ''
 const nombreDe = (id) => usuarios.value.find(u => u.id === id)?.nombre || ''
 const archivoDe = (tareaId) => archivos.value.filter(a => a.tareaId === tareaId).at(-1)
+
+// RF-22: reporte exportable del avance por proyecto (CSV que abre Excel)
+function celda(valor) {
+  let texto = String(valor ?? '')
+  // Evita que Excel interprete el texto como fórmula
+  if (/^[=+\-@]/.test(texto)) texto = "'" + texto
+  return `"${texto.replace(/"/g, '""')}"`
+}
+
+function exportarReporte() {
+  const encabezado = ['Proyecto', 'Estado', 'Investigador responsable', 'Inicio', 'Término',
+    'Tareas', 'Cumplidas', 'Por revisar', 'Pendientes', 'Atrasadas', 'Avance (%)']
+  const filas = proyectosFiltrados.value.map(p => {
+    const lista = tareas.value.filter(t => t.proyectoId === p.id)
+    const cuenta = (estado) => lista.filter(t => t.estado === estado).length
+    return [p.titulo, p.estado, nombreDe(p.liderId), p.fechaInicio, p.fechaFin, lista.length,
+      cuenta('cumplida'), cuenta('por_revisar'), cuenta('pendiente'), lista.filter(estaAtrasada).length, avance(p.id)]
+  })
+  const csv = [encabezado, ...filas].map(fila => fila.map(celda).join(';')).join('\r\n')
+  const archivo = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
+  const enlace = document.createElement('a')
+  enlace.href = URL.createObjectURL(archivo)
+  enlace.download = `reporte-avance-${new Date().toISOString().slice(0, 10)}.csv`
+  enlace.click()
+  URL.revokeObjectURL(enlace.href)
+}
 </script>
 
 <template>
@@ -86,7 +112,12 @@ const archivoDe = (tareaId) => archivos.value.filter(a => a.tareaId === tareaId)
 
   <div class="titulo-fila">
     <h3>Avance por proyecto</h3>
-    <a v-if="filtroEstado !== 'todos'" href="#" @click.prevent="filtroEstado = 'todos'">Ver todos</a>
+    <div>
+      <a v-if="filtroEstado !== 'todos'" href="#" @click.prevent="filtroEstado = 'todos'">Ver todos</a>
+      <button class="boton chico" style="margin-left:10px" :disabled="proyectosFiltrados.length === 0" @click="exportarReporte">
+        Exportar reporte (CSV)
+      </button>
+    </div>
   </div>
   <p v-if="proyectosFiltrados.length === 0">No hay proyectos en este estado.</p>
   <div v-for="p in proyectosFiltrados" :key="p.id">

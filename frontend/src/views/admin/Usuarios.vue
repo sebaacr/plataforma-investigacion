@@ -2,6 +2,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { obtenerUsuarios, crearUsuario, actualizarUsuario } from '../../services/usuariosApi'
 import { registrarHistorial } from '../../services/api'
+import { perfilVacio, validarPerfil, limpiarPerfil } from '../../services/perfilAcademico'
 import { usuario as yo } from '../../sesion'
 
 const usuarios = ref([])
@@ -41,7 +42,8 @@ async function guardar() {
       rol: formulario.rol,
       especialidad: formulario.especialidad.trim(),
       institucion: 'UNACH',
-      activo: true
+      activo: true,
+      ...perfilVacio()
     })
     await registrarHistorial(yo.value.nombre, 'usuario', `Creó el usuario "${formulario.nombre.trim()}"`)
     mensaje.value = 'Usuario creado correctamente.'
@@ -60,6 +62,31 @@ async function cambiarActivo(u) {
     await registrarHistorial(yo.value.nombre, 'usuario', `${accion} al usuario "${u.nombre}"`)
     await cargar()
   } catch { error.value = 'No fue posible actualizar el usuario.' }
+}
+
+// RF-03: perfil académico que se muestra en el portal público
+const perfilDe = ref(null)
+const perfil = reactive({ ...perfilVacio(), especialidad: '', asignaturasTexto: '' })
+
+function abrirPerfil(u) {
+  perfilDe.value = u
+  Object.assign(perfil, limpiarPerfil(u), { especialidad: u.especialidad || '' })
+  perfil.asignaturasTexto = perfil.asignaturas.join(', ')
+  error.value = ''; mensaje.value = ''
+}
+
+async function guardarPerfil() {
+  error.value = ''; mensaje.value = ''
+  const datos = limpiarPerfil({ ...perfil, asignaturas: perfil.asignaturasTexto })
+  const problema = validarPerfil(datos)
+  if (problema) { error.value = problema; return }
+  try {
+    await actualizarUsuario(perfilDe.value.id, { ...datos, especialidad: perfil.especialidad.trim() })
+    await registrarHistorial(yo.value.nombre, 'usuario', `Actualizó el perfil académico de "${perfilDe.value.nombre}"`)
+    mensaje.value = `Perfil de ${perfilDe.value.nombre} actualizado.`
+    perfilDe.value = null
+    await cargar()
+  } catch { error.value = 'No fue posible guardar el perfil.' }
 }
 
 async function cambiarRol(u, rol) {
@@ -97,6 +124,19 @@ async function cambiarRol(u, rol) {
     <button class="boton" type="submit" :disabled="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
   </form>
 
+  <form v-if="perfilDe" @submit.prevent="guardarPerfil">
+    <h3>Perfil académico de {{ perfilDe.nombre }}</h3>
+    <label>Especialidad <input v-model="perfil.especialidad" maxlength="100" /></label>
+    <label>Facultad / dirección <input v-model="perfil.facultad" maxlength="150" /></label>
+    <label>Carrera <input v-model="perfil.carrera" maxlength="150" /></label>
+    <label>Programa de posgrado <input v-model="perfil.posgrado" maxlength="150" /></label>
+    <label>Asignaturas <input v-model="perfil.asignaturasTexto" placeholder="Separadas por coma" /></label>
+    <label>Perfil ORCID <input v-model="perfil.orcid" type="url" placeholder="https://orcid.org/0000-0000-0000-0000" /></label>
+    <label>Perfil ResearchGate <input v-model="perfil.researchgate" type="url" placeholder="https://www.researchgate.net/profile/..." /></label>
+    <button class="boton" type="submit">Guardar perfil</button>
+    <a href="#" style="margin-left:10px" @click.prevent="perfilDe = null">Cancelar</a>
+  </form>
+
   <div class="filtros">
     <input v-model="buscando" placeholder="Buscar por nombre o correo" />
     <select v-model="filtroRol" style="max-width:200px">
@@ -126,6 +166,7 @@ async function cambiarRol(u, rol) {
           <button v-if="u.id !== yo.id" class="boton chico" :class="{ rojo: u.activo }" @click="cambiarActivo(u)">
             {{ u.activo ? 'Desactivar' : 'Activar' }}
           </button>
+          <button v-if="u.rol !== 'admin'" class="boton chico gris" @click="abrirPerfil(u)">Perfil</button>
         </td>
       </tr>
     </tbody>
