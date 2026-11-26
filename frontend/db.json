@@ -74,6 +74,11 @@
       "activo": true,
       "id": "zrkVmjfx-IA"
     }
+    { "id": "1", "nombre": "Administrador", "correo": "admin@unach.cl", "rol": "admin", "especialidad": "", "institucion": "UNACH", "activo": true },
+    { "id": "2", "nombre": "Dra. Ana Pérez", "correo": "aperez@unach.cl", "rol": "investigador", "especialidad": "Educación", "institucion": "UNACH", "activo": true },
+    { "id": "3", "nombre": "Dr. Luis Muñoz", "correo": "lmunoz@unach.cl", "rol": "investigador", "especialidad": "Informática", "institucion": "UNACH", "activo": true },
+    { "id": "4", "nombre": "Juan Soto", "correo": "jsoto@unach.cl", "rol": "colaborador", "especialidad": "Psicología", "institucion": "UNACH", "activo": true },
+    { "id": "5", "nombre": "María López", "correo": "mlopez@unach.cl", "rol": "colaborador", "especialidad": "Estadística", "institucion": "UNACH", "activo": true }
   ],
   "proyectos": [
     {

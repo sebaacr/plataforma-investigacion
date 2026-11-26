@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { obtenerProyecto, obtenerEtapas, obtenerParticipaciones } from '../../services/proyectosApi'
+import { esProyectoPublico } from '../../services/portalPublico'
 import { obtenerUsuarios } from '../../services/usuariosApi'
 
 const route = useRoute()
@@ -14,7 +15,7 @@ const error = ref('')
 onMounted(async () => {
   try {
     proyecto.value = await obtenerProyecto(route.params.id)
-    if (!proyecto.value.esPublico) { proyecto.value = null; error.value = 'Este proyecto no está publicado.'; return }
+    if (!esProyectoPublico(proyecto.value)) { proyecto.value = null; error.value = 'Este proyecto no está publicado.'; return }
     etapas.value = (await obtenerEtapas(route.params.id)).sort((a, b) => a.orden - b.orden)
     usuarios.value = await obtenerUsuarios()
     participaciones.value = await obtenerParticipaciones()

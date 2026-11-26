@@ -38,7 +38,6 @@ async function guardar() {
     await crearUsuario({
       nombre: formulario.nombre.trim(),
       correo: formulario.correo.trim().toLowerCase(),
-      password: '1234',
       rol: formulario.rol,
       especialidad: formulario.especialidad.trim(),
       institucion: 'UNACH',
