@@ -51,6 +51,7 @@ Disponible en http://localhost:5173
 ```bash
 npm test
 ```
+El detalle de las pruebas P1–P10 del portal y del login, con sus evidencias, está en [PRUEBAS.md](PRUEBAS.md).
 
 ## 4. Usuarios habilitados de prueba
 Para iniciar sesión, usa Google con la misma dirección de correo registrada. No existen contraseñas locales; `db.json` solo contiene perfiles, roles y estado de las cuentas.

@@ -18,7 +18,7 @@ Línea base: requerimientos funcionales del documento "Plataforma Integral de Ge
 | RF-03 | Perfiles con especialidad, institución y proyectos | Sebastián | Terminado | Perfil académico (facultad, carrera, posgrado, asignaturas, ORCID/ResearchGate) editable por el admin y visible en el perfil público con sus proyectos | `admin/Usuarios.vue`, `publico/PerfilInvestigador.vue` |
 | RF-04 | Asignar roles y actualizar perfil propio | Sebastián / Benjamín | Terminado | Roles: admin. Cada investigador o colaborador edita su perfil en "Mi perfil" | `admin/Usuarios.vue`, `MiPerfil.vue` |
 | RF-05 | Registrar, editar y consultar proyectos | Sebastián | Terminado | Valida título, objetivo, líder obligatorio y fechas coherentes | `admin/FormularioProyecto.vue` |
-| RF-06 | Búsqueda, filtros y fichas | Pablo | Terminado | Buscador en portal, filtros por estado y rol, ficha con detalle | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue`, `test/portal.test.js` |
+| RF-06 | Búsqueda, filtros y fichas | Pablo | Terminado | Buscador por título o investigador, filtro por fase en el portal, filtros por estado y rol en administración, ficha con detalle; pruebas P1–P10 documentadas | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue`, `test/portal.test.js`, `PRUEBAS.md` |
 | RF-07 | Publicar solo contenido autorizado | Pablo | Terminado | Un proyecto sin "Publicar" no aparece en el portal ni se abre su ficha | `publico/InicioPublico.vue`, `publico/FichaProyecto.vue`, `test/portal.test.js` |
 | RF-08 | Enviar invitaciones | — | Pendiente | Reemplazado por creación de cuentas por el admin; por confirmar con la contraparte | — |
 | RF-09 | Aceptar o rechazar invitaciones | — | Pendiente | Depende de RF-08 | — |
@@ -26,8 +26,8 @@ Línea base: requerimientos funcionales del documento "Plataforma Integral de Ge
 | RF-11 | Etapas, hitos, entregables y actividades | Benjamín | Terminado | Etapas con fechas e hitos con fecha y estado cumplido, dibujados en la carta Gantt | `investigador/VistaProyecto.vue`, `components/CartaGantt.vue` |
 | RF-12 | Generar carta Gantt | Benjamín | Terminado | Barras según fechas reales; color según fecha actual | `components/CartaGantt.vue` |
 | RF-13 | Actualizar cronograma y ver atrasos | Benjamín | Terminado | Atrasos visibles; las etapas se editan desde la carta Gantt (✎) con validación de fechas | `investigador/VistaProyecto.vue` |
-| RF-14 | Crear y asignar tareas | Benjamín | Terminado | No se crea sin etapa, responsable y fecha; queda "pendiente"; solo a integrantes | `investigador/VistaProyecto.vue` |
-| RF-15 | Actualizar avances y consultar estados | Germán | Terminado | Subir archivo → Por revisar; aprobar → Cumplida; devolver → Pendiente | `colaborador/MisTareas.vue`, `components/TableroTareas.vue` |
+| RF-14 | Crear y asignar tareas | Benjamín | Terminado | No se crea sin etapa, responsable y fecha; queda "pendiente"; solo a integrantes. El tablero muestra la prioridad y ordena por prioridad y fecha límite | `investigador/VistaProyecto.vue`, `components/TableroTareas.vue` |
+| RF-15 | Actualizar avances y consultar estados | Germán | Terminado | Subir archivo → Por revisar; aprobar → Cumplida; devolver → Pendiente. "Mis tareas" muestra la prioridad, ordena por prioridad y filtra por estado | `colaborador/MisTareas.vue`, `components/TableroTareas.vue` |
 | RF-16 | Registrar estudios y pruebas | — | Pendiente | Por confirmar con la contraparte | — |
 | RF-17 | Adjuntar, clasificar y descargar documentos | Germán | Parcial | Registro de archivo y versión; subida real a Drive pendiente | `colaborador/MisTareas.vue` |
 | RF-18 | Autor y fecha de archivos | Germán | Terminado | Cada archivo guarda `subidoPor`, `subidoEn` y `version` | `db.json` (archivos) |
