@@ -3,7 +3,7 @@
 
 - **Equipo:** Sebastián Concha, Germán Cárdenas, Benjamín Rozas, Pablo Apala
 - **Contraparte:** Nicolás Gómez
-- **Estado:** Prototipo funcional (avance 1)
+- **Estado:** Prototipo funcional (avance 1 + retroalimentación N° 1 de la contraparte)
 
 ---
 
@@ -63,29 +63,35 @@ Para iniciar sesión, usa Google con la misma dirección de correo registrada. N
 
 ## 5. Estructura
 ```
+database/
+├── modelo.sql                  Modelo E-R en MySQL
+└── retroalimentacion_1.sql     ODS, artículos, publicaciones, hitos y perfil académico
 frontend/
 ├── db.json                 Datos de prueba (según modelo E-R)
+├── public/logos/           Logos institucionales (CREA-EVAS)
 └── src/
     ├── sesion.js           Usuario conectado
     ├── router/index.js     Rutas y protección por rol
-    ├── services/           Peticiones HTTP (api, usuarios, proyectos, tareas)
-    ├── components/         MenuLateral, CartaGantt, TableroTareas
+    ├── data/ods.js         Catálogo de los 17 ODS
+    ├── services/           Peticiones HTTP (api, usuarios, proyectos, tareas, publicaciones) y perfil académico
+    ├── components/         MenuLateral, CartaGantt, TableroTareas, InsigniaOds
     └── views/
-        ├── publico/        InicioPublico, FichaProyecto
+        ├── publico/        InicioPublico, FichaProyecto, Publicacion, PerfilInvestigador
         ├── Login.vue
         ├── Dashboard.vue
-        ├── admin/          Usuarios, Proyectos, FormularioProyecto, Historial
-        ├── investigador/   MisProyectos, VistaProyecto (Gantt + tareas)
+        ├── MiPerfil.vue
+        ├── admin/          Usuarios, Proyectos, FormularioProyecto, Publicaciones, Historial
+        ├── investigador/   MisProyectos, VistaProyecto (equipo, Gantt, hitos y tareas)
         └── colaborador/    MisTareas
 ```
 
 ## 6. Funcionalidades del prototipo
 | Rol | Puede |
 |---|---|
-| Público | Ver proyectos publicados, buscar y ver la ficha (objetivo, investigadores, fase) |
-| Administrador | Crear usuarios, cambiar rol, activar/desactivar cuentas; crear y editar proyectos y marcarlos como públicos; ver dashboard e historial |
-| Investigador | Ver sus proyectos, agregar etapas a la carta Gantt, asignar tareas, aprobar o devolver tareas |
-| Colaborador | Ver sus tareas, subir archivo (la tarea pasa a "Por revisar") |
+| Público | Ver el banner de proyectos destacados y el de publicaciones destacadas (cada publicación con su página), buscar proyectos, ver la ficha (resumen, objetivo, co-investigadores, fase, resultados e impacto esperado, ODS y artículos relevantes), el listado de investigadores activos y su perfil académico |
+| Administrador | Crear usuarios, cambiar rol, activar/desactivar cuentas y editar su perfil académico; crear y editar proyectos (resumen, resultados, impacto, ODS y hasta 10 artículos), publicarlos y destacarlos; administrar publicaciones; ver dashboard, exportar el reporte CSV e historial |
+| Investigador | Ver sus proyectos, agregar co-investigadores y colaboradores, crear y editar etapas, registrar hitos, asignar tareas, aprobar o devolver tareas y editar su perfil |
+| Colaborador | Ver sus tareas, subir archivo (la tarea pasa a "Por revisar") y editar su perfil |
 
 ## 7. Reglas de negocio aplicadas
 - RN-01: todo proyecto requiere un investigador responsable.
@@ -98,5 +104,7 @@ frontend/
 ## 8. Limitaciones (pendiente para siguientes avances)
 - Las rutas y los datos del sistema siguen siendo un prototipo local con JSON Server. Aunque el servidor de autenticación valida Google, el perfil de sesión y las rutas protegidas del cliente no sustituyen autorización de servidor. No publicar este prototipo como sistema de producción hasta proteger las operaciones de datos y desplegar el backend bajo HTTPS.
 - La subida de archivos solo guarda el nombre; falta integrar la API de Google Drive.
+- Falta el logo del CDT (se solicitará al profesor Pablo). Los ODS se muestran con su número, nombre y color oficial.
+- Las portadas de las publicaciones se ingresan como enlace a una imagen; aún no se suben archivos.
 - Envío de correo al asignar tareas: versión futura.
 - Por confirmar con la contraparte: si el líder puede crear colaboradores, criterio de % de avance, módulo de estudios y pruebas (RF-16).
