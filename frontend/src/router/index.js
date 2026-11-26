@@ -8,6 +8,7 @@ import Usuarios from '../views/admin/Usuarios.vue'
 import Proyectos from '../views/admin/Proyectos.vue'
 import FormularioProyecto from '../views/admin/FormularioProyecto.vue'
 import Historial from '../views/admin/Historial.vue'
+import Publicaciones from '../views/admin/Publicaciones.vue'
 import Dashboard from '../views/Dashboard.vue'
 import MisProyectos from '../views/investigador/MisProyectos.vue'
 import VistaProyecto from '../views/investigador/VistaProyecto.vue'
@@ -23,6 +24,7 @@ const rutas = [
   { path: '/admin/proyectos/nuevo', component: FormularioProyecto, meta: { roles: ['admin'] } },
   { path: '/admin/proyectos/editar/:id', component: FormularioProyecto, meta: { roles: ['admin'] } },
   { path: '/admin/historial', component: Historial, meta: { roles: ['admin'] } },
+  { path: '/admin/publicaciones', component: Publicaciones, meta: { roles: ['admin'] } },
 
   { path: '/dashboard', component: Dashboard, meta: { roles: ['admin', 'investigador'] } },
 

@@ -9,6 +9,7 @@ import { usuario } from '../sesion'
       <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/admin/usuarios">Usuarios</RouterLink>
       <RouterLink to="/admin/proyectos">Proyectos</RouterLink>
+      <RouterLink to="/admin/publicaciones">Publicaciones</RouterLink>
       <RouterLink to="/admin/historial">Historial</RouterLink>
     </template>
 
