@@ -14,7 +14,9 @@ function salir() {
 <template>
   <header class="barra-top">
     <div class="logos">
-      <span>UNACH</span><span>Centro Inv.</span><span>Informática</span><span>CDT</span>
+      <span>UNACH</span>
+      <span class="logo-img"><img src="/logos/crea-evas.svg" alt="CREA-EVAS" /></span>
+      <span>Informática</span><span>CDT</span>
     </div>
     <nav>
       <RouterLink to="/">Portal público</RouterLink>
@@ -32,3 +34,9 @@ function salir() {
   </div>
   <RouterView v-else />
 </template>
+
+<style scoped>
+.logos { display: flex; align-items: center; }
+.logo-img { padding: 3px 8px; }
+.logo-img img { height: 28px; display: block; }
+</style>

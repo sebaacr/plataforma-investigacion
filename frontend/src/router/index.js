@@ -3,6 +3,8 @@ import { usuario } from '../sesion'
 
 import InicioPublico from '../views/publico/InicioPublico.vue'
 import FichaProyecto from '../views/publico/FichaProyecto.vue'
+import Publicacion from '../views/publico/Publicacion.vue'
+import PerfilInvestigador from '../views/publico/PerfilInvestigador.vue'
 import Login from '../views/Login.vue'
 import Usuarios from '../views/admin/Usuarios.vue'
 import Proyectos from '../views/admin/Proyectos.vue'
@@ -16,6 +18,8 @@ import MisTareas from '../views/colaborador/MisTareas.vue'
 const rutas = [
   { path: '/', component: InicioPublico },
   { path: '/proyecto/:id', component: FichaProyecto },
+  { path: '/publicacion/:id', component: Publicacion },
+  { path: '/investigador/:id', component: PerfilInvestigador },
   { path: '/login', component: Login },
 
   { path: '/admin/usuarios', component: Usuarios, meta: { roles: ['admin'] } },
